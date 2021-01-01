@@ -1,0 +1,1 @@
+glib-compile-resources gresource.xml --target=resources.c --generate-source

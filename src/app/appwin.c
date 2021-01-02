@@ -2,10 +2,13 @@
 
 #include "app.h"
 #include "appwin.h"
+#include "../menu/menu.h"
 
 struct _AppWindow {
     GtkApplicationWindow parent;
     GtkStack *stack;
+
+    App *app;
 
     GtkGrid *mainMenuPage;
     GtkGrid *gameplayPage;
@@ -19,7 +22,9 @@ G_DEFINE_TYPE(AppWindow, app_window, GTK_TYPE_APPLICATION_WINDOW);
 static void app_window_init(AppWindow *win) {
     gtk_widget_init_template(GTK_WIDGET(win));
 
-    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->howToPlayPage));
+    menu_init(win, win->mainMenuPage);
+
+    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->mainMenuPage));
 }
 
 static void app_window_class_init(AppWindowClass *class) {
@@ -35,6 +40,24 @@ static void app_window_class_init(AppWindowClass *class) {
 }
 
 AppWindow *app_window_new(App *app) {
-    return g_object_new(APP_WINDOW_TYPE, "application", app, NULL);
+    AppWindow *win = g_object_new(APP_WINDOW_TYPE, "application", app, NULL);
+    win->app = app;
+    return win;
+}
+
+void app_window_play_as_1(GtkWidget *widget, AppWindow *win) {
+    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->lobbyPage));
+}
+
+void app_window_play_as_2(GtkWidget *widget, AppWindow *win) {
+    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->lobbyPage));
+}
+
+void app_window_how_to_play(GtkWidget *widget, AppWindow *win) {
+    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->howToPlayPage));
+}
+
+void app_window_quit(GtkWidget *widget, AppWindow *win) {
+    g_application_quit(G_APPLICATION(win->app));
 }
 

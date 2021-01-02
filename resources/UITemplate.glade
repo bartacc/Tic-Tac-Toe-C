@@ -392,6 +392,7 @@ That's right</property>
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Back to menu/game</property>
+                <property name="name">how_to_play_back_button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

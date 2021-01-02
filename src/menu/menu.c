@@ -18,7 +18,7 @@ void menu_init(AppWindow *window, GtkGrid *menu) {
             continue;
         }
         if (strcmp(name, "menu_how_to_play_button") == 0) {
-            g_signal_connect(widget, "clicked", app_window_how_to_play, window);
+            g_signal_connect(widget, "clicked", app_window_how_to_play_show, window);
             continue;
         }
         if (strcmp(name, "menu_quit_button") == 0) {

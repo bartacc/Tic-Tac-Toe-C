@@ -1,8 +1,8 @@
-#include <gtk/gtk.h>
-
-#include "app.h"
 #include "appwin.h"
+
 #include "../menu/menu.h"
+#include "../how_to_play/how_to_play.h"
+
 
 struct _AppWindow {
     GtkApplicationWindow parent;
@@ -45,16 +45,35 @@ AppWindow *app_window_new(App *app) {
     return win;
 }
 
+void app_window_show_view(GtkGrid *view, AppWindow *win) {
+    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(view));
+}
+
 void app_window_play_as_1(GtkWidget *widget, AppWindow *win) {
-    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->lobbyPage));
+    app_window_show_view(win->lobbyPage, win);
 }
 
 void app_window_play_as_2(GtkWidget *widget, AppWindow *win) {
-    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->lobbyPage));
+    app_window_show_view(win->lobbyPage, win);
 }
 
-void app_window_how_to_play(GtkWidget *widget, AppWindow *win) {
-    gtk_stack_set_visible_child(win->stack, GTK_WIDGET(win->howToPlayPage));
+void app_window_how_to_play_show(GtkWidget *widget, AppWindow *win) {
+    how_to_play_init(win, win->howToPlayPage, widget);
+    app_window_show_view(win->howToPlayPage, win);
+}
+
+void app_window_how_to_play_hide(GtkWidget *widget, gpointer data) {
+    HowToPlayCallbackData *d = data;
+
+    const gchar *name = d->from_name;
+    const AppWindow *win = d->window;
+
+    if (strcmp(name, "menu_how_to_play_button") == 0) {
+        app_window_show_view(win->mainMenuPage, win);
+    } else if (strcmp(name, "gameplay_how_to_play_button") == 0) {
+        app_window_show_view(win->gameplayPage, win);
+    }
+
 }
 
 void app_window_quit(GtkWidget *widget, AppWindow *win) {

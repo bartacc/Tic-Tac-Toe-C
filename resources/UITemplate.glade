@@ -422,33 +422,8 @@ That's right</property>
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkSpinner">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="active">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Exit</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_top">50</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkGrid" id="player-1-controls">
+                <property name="name">lobby_player_1_controls</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">30</property>
@@ -457,6 +432,7 @@ That's right</property>
                 <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkLabel">
+                    <property name="name">lobby_choose_columns_label</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Choose numbers of columns</property>
@@ -470,6 +446,7 @@ That's right</property>
                 <child>
                   <object class="GtkButton">
                     <property name="label" translatable="yes">4</property>
+                    <property name="name">lobby_choose_columns_4_button</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -483,6 +460,7 @@ That's right</property>
                 <child>
                   <object class="GtkButton">
                     <property name="label" translatable="yes">5</property>
+                    <property name="name">lobby_choose_columns_5_button</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -494,17 +472,7 @@ That's right</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
-                    <property name="label" translatable="yes">Confirm</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
-                    <property name="width">2</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -522,6 +490,7 @@ That's right</property>
             </child>
             <child>
               <object class="GtkLabel">
+                <property name="name">lobby_waiting_for_player_label</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Waiting for Player 1/2</property>
@@ -534,6 +503,12 @@ That's right</property>
                 <property name="top_attach">0</property>
                 <property name="width">4</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <placeholder/>

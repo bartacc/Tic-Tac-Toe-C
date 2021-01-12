@@ -6,6 +6,7 @@
 void connection_init(PlayerType pType);
 void connection_drop();
 void connection_send_columns(int columns);
+void connection_send_move(char *prefix, int column);
 void connection_show_error(char *error);
 
 

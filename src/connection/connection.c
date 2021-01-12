@@ -4,6 +4,7 @@
 #include "fifo.h"
 #include "../lobby/lobby.h"
 #include "../app/app.h"
+#include "../game/game.h"
 
 typedef struct state {
     bool requestReceived;
@@ -79,6 +80,35 @@ void connection_send_columns(int columns) {
     printf("%s%d\n", "Sent columns_", columns);
 }
 
+void connection_send_move(char *prefix, int column) {
+    char operation[MAX_CONSTANT_LENGTH];
+    strcpy(operation, prefix);
+
+    char columnString[BOARD_SIZE_MAX_DIGITS + 1];
+    columnString[BOARD_SIZE_MAX_DIGITS] = '\0';
+    for (int i = BOARD_SIZE_MAX_DIGITS - 1; i >= 0; i--) {
+        int digit = column % 10;
+        column = column / 10;
+        char digitChar = digit + '0';
+        columnString[i] = digitChar;
+    }
+
+    strcat(operation, columnString);
+
+    send_string_to_pipe(currentPipe, operation);
+    printf("Sent %s%s\n", prefix, columnString);
+}
+
+static int read_move_column(char *numberPtr) {
+    char column[BOARD_SIZE_MAX_DIGITS + 1];
+    for (int i = 0; i < BOARD_SIZE_MAX_DIGITS; i++) {
+        column[i] = *numberPtr;
+        numberPtr++;
+    }
+    column[BOARD_SIZE_MAX_DIGITS] = '\0';
+    return atoi(column);
+}
+
 static void act_on_state_change() {
     if ((state.requestSent && state.requestReceived) || state.connectionAccepted) {
         init_state();
@@ -135,6 +165,22 @@ static gboolean get_text() {
         if (strstr(input, COLUMNS_5) != NULL) {
             printf("%s\n", "Received columns_5");
             lobby_columns_received(5);
+        }
+        if (strstr(input, MOVE_PUSH_PREFIX) != NULL) {
+            char *stringPtr = strstr(input, MOVE_PUSH_PREFIX);
+            stringPtr += strlen(MOVE_PUSH_PREFIX);
+            int column = read_move_column(stringPtr);
+            game_move_push(column, false);
+
+            printf("Received %s%d\n", MOVE_PUSH_PREFIX, column);
+        }
+        if (strstr(input, MOVE_REPLACE_PREFIX) != NULL) {
+            char *stringPtr = strstr(input, MOVE_REPLACE_PREFIX);
+            stringPtr += strlen(MOVE_REPLACE_PREFIX);
+            int column = read_move_column(stringPtr);
+            game_move_replace(column);
+
+            printf("Received %s%d\n", MOVE_REPLACE_PREFIX, column);
         }
     }
     return TRUE;

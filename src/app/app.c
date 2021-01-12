@@ -5,6 +5,7 @@
 #include "../connection/connection.h"
 #include "../lobby/lobby.h"
 #include "../how_to_play/how_to_play.h"
+#include "../game/game.h"
 
 typedef struct pages {
     GtkStack *stack;
@@ -59,8 +60,9 @@ static void init_pages() {
     menu_init(builder);
     lobby_init(builder);
     how_to_play_init(builder);
+    game_init(builder);
 
-    app_show_page(pages.mainMenuPage);
+    app_menu();
 }
 
 static void app_show_page(GtkGrid *page) {
@@ -95,6 +97,7 @@ void app_how_to_play_hide(GtkWidget *widget, const gchar *backToPage) {
 }
 
 void app_start_game(int columns, PlayerType pType) {
+    game_start(columns, pType);
     app_show_page(pages.gameplayPage);
 }
 

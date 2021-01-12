@@ -15,8 +15,18 @@
 #define GAMEPLAY_PAGE "gameplay_page"
 #define MENU_PAGE "menu_page"
 
+//Gameplay
+#define BOARD_SIZE 10
+#define BOARD_SIZE_MAX_DIGITS 2
+#define MOVE_PUSH_PREFIX "move_push_"
+#define MOVE_REPLACE_PREFIX "move_replace_"
+
 typedef enum playerType {
     PLAYER_ONE, PLAYER_TWO
 } PlayerType;
+
+typedef enum element {
+    X, O, EMPTY
+} Element;
 
 #endif //TIC_TAC_TOE_C_CONSTANTS_H

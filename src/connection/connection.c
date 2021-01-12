@@ -3,6 +3,7 @@
 #include "connection.h"
 #include "fifo.h"
 #include "../lobby/lobby.h"
+#include "../app/app.h"
 
 typedef struct state {
     bool requestReceived;
@@ -11,12 +12,13 @@ typedef struct state {
     bool dropReceived;
     bool dropSent;
 
+    bool connectionAccepted;
+
     bool connectionEstablished;
 } State;
 
 static State state;
 static PipesPtr currentPipe = NULL;
-static AppWindow *window;
 static gint timeoutID = -1;
 
 static void init_state();
@@ -29,17 +31,17 @@ static void init_state() {
     state.requestSent = false;
     state.dropReceived = false;
     state.dropSent = false;
+    state.connectionAccepted = false;
     state.connectionEstablished = false;
 }
 
-void connection_init(AppWindow *win, PlayerType playerType) {
+void connection_init(PlayerType playerType) {
     printf("%s\n", "Connection init");
     init_state();
     if (currentPipe != NULL) {
         close_pipes(currentPipe);
     }
     currentPipe = init_pipes(playerType);
-    window = win;
     if (timeoutID != -1) {
         g_source_remove(timeoutID);
     }
@@ -63,21 +65,26 @@ void connection_drop() {
     act_on_state_change();
 }
 
+static void connection_accept() {
+    send_string_to_pipe(currentPipe, ACCEPT_CONNECTION);
+    printf("%s\n", "Sent accept connection");
+}
+
 void connection_send_columns(int columns) {
     if (columns == 4) {
         send_string_to_pipe(currentPipe, COLUMNS_4);
     } else {
         send_string_to_pipe(currentPipe, COLUMNS_5);
     }
+    printf("%s%d\n", "Sent columns_", columns);
 }
 
 static void act_on_state_change() {
-    if (state.requestSent && state.requestReceived) {
+    if ((state.requestSent && state.requestReceived) || state.connectionAccepted) {
         init_state();
         state.connectionEstablished = true;
         printf("%s\n", "Connection has been established");
         lobby_connection_established();
-
     } else if (state.dropSent || state.dropReceived) {
         if (state.connectionEstablished) {
             printf("%s\n", "Connection dropped");
@@ -88,7 +95,7 @@ static void act_on_state_change() {
 }
 
 void connection_show_error(char *error) {
-    app_window_show_error(window, error);
+    app_show_error(error);
 }
 
 static gboolean get_text() {
@@ -96,25 +103,39 @@ static gboolean get_text() {
         return TRUE;
     }
 
-    gchar input[MAX_OPERATION_LENGTH];
-    if (get_string_from_pipe(currentPipe, input, MAX_OPERATION_LENGTH)) {
-        if (strcmp(input, REQUEST_CONNECTION) == 0) {
+    gchar input[MAX_CONSTANT_LENGTH];
+    if (get_string_from_pipe(currentPipe, input, MAX_CONSTANT_LENGTH)) {
+        printf("%s: %s\n", "Incoming operation", input);
+        if (strstr(input, REQUEST_CONNECTION) != NULL) {
             state.requestReceived = true;
             printf("%s\n", "Received connection request");
+            if (state.requestSent) {
+                connection_accept();
+            }
             act_on_state_change();
-        } else if (strcmp(input, DROP_CONNECTION) == 0) {
+        }
+        if (strstr(input, ACCEPT_CONNECTION) != NULL) {
+            if (!state.connectionEstablished) {
+                state.connectionAccepted = true;
+                printf("%s\n", "Received accept connection");
+                act_on_state_change();
+            } else {
+                printf("%s\n", "Received accept connection (Connection already established)");
+            }
+        }
+        if (strstr(input, DROP_CONNECTION) != NULL) {
             state.dropReceived = true;
             printf("%s\n", "Received drop request");
             act_on_state_change();
-        } else if (strcmp(input, COLUMNS_4) == 0) {
+        }
+        if (strstr(input, COLUMNS_4) != NULL) {
             printf("%s\n", "Received columns_4");
             lobby_columns_received(4);
-        } else if (strcmp(input, COLUMNS_5) == 0) {
+        }
+        if (strstr(input, COLUMNS_5) != NULL) {
             printf("%s\n", "Received columns_5");
             lobby_columns_received(5);
         }
-
-
     }
     return TRUE;
 }

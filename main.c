@@ -2,8 +2,9 @@
 #include "src/app/app.h"
 
 int main(int argc, char *argv[]) {
-    GApplication *a = G_APPLICATION(app_new());
-    int status = g_application_run(a, argc, argv);
-    g_object_unref(a);
-    return status;
+    gtk_init(&argc, &argv);
+    app_init(argc, argv);
+    gtk_main();
+
+    return 0;
 }

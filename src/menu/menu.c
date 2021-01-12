@@ -1,22 +1,18 @@
 #include "menu.h"
+#include "../app/app.h"
 
-void menu_init(AppWindow *window, GtkGrid *menu) {
-    GList *children = gtk_container_get_children(GTK_CONTAINER(menu));
+static const gchar *MENU_PAGE_STRING = MENU_PAGE;
 
-    for (GList *elem = children; elem != NULL; elem = elem->next) {
-        gpointer data = elem->data;
+void menu_init(GtkBuilder *builder) {
+    GtkButton *playAs1Button, *playAs2Button, *howToPlayButton, *quitButton;
 
-        GtkWidget *widget = GTK_WIDGET(data);
-        const gchar *name = gtk_widget_get_name(widget);
+    playAs1Button = GTK_BUTTON(gtk_builder_get_object(builder, "menu_play_as_1_button"));
+    playAs2Button = GTK_BUTTON(gtk_builder_get_object(builder, "menu_play_as_2_button"));
+    howToPlayButton = GTK_BUTTON(gtk_builder_get_object(builder, "menu_how_to_play_button"));
+    quitButton = GTK_BUTTON(gtk_builder_get_object(builder, "menu_quit_button"));
 
-        if (strcmp(name, "menu_play_as_1_button") == 0) {
-            g_signal_connect(widget, "clicked", G_CALLBACK(app_window_play_as_1), window);
-        } else if (strcmp(name, "menu_play_as_2_button") == 0) {
-            g_signal_connect(widget, "clicked", G_CALLBACK(app_window_play_as_2), window);
-        } else if (strcmp(name, "menu_how_to_play_button") == 0) {
-            g_signal_connect(widget, "clicked", G_CALLBACK(app_window_how_to_play_show), window);
-        } else if (strcmp(name, "menu_quit_button") == 0) {
-            g_signal_connect(widget, "clicked", G_CALLBACK(app_window_quit), window);
-        }
-    }
+    g_signal_connect(playAs1Button, "clicked", G_CALLBACK(app_play_as_1), NULL);
+    g_signal_connect(playAs2Button, "clicked", G_CALLBACK(app_play_as_2), NULL);
+    g_signal_connect(howToPlayButton, "clicked", G_CALLBACK(app_how_to_play_show), MENU_PAGE_STRING);
+    g_signal_connect(quitButton, "clicked", G_CALLBACK(app_quit), NULL);
 }

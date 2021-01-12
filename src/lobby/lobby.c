@@ -1,73 +1,50 @@
 #include <stdbool.h>
 #include "lobby.h"
 #include "../connection/connection.h"
-
-static AppWindow *window;
-static GtkGrid *lobbyGrid;
-static bool connectionEstablished;
-static int chosenColumns;
+#include "../app/app.h"
 
 static GtkGrid *player1Controls;
 static GtkLabel *waitingForPlayerLabel;
 static PlayerType playerType;
+static int chosenSize;
 
-static void init_player_1_controls(GtkGrid *controls);
+static void choose_size(int size);
+static void choose_size_4();
+static void choose_size_5();
 
-void lobby_init(AppWindow *win, GtkGrid *lobby) {
-    window = win;
-    lobbyGrid = lobby;
+void lobby_init(GtkBuilder *builder) {
+    GtkButton *choose4, *choose5;
 
-    GList *children = gtk_container_get_children(GTK_CONTAINER(lobby));
+    player1Controls = GTK_GRID(gtk_builder_get_object(builder, "lobby_player_1_controls"));
+    choose4 = GTK_BUTTON(gtk_builder_get_object(builder, "lobby_choose_size_4_button"));
+    choose5 = GTK_BUTTON(gtk_builder_get_object(builder, "lobby_choose_size_5_button"));
 
-    for (GList *elem = children; elem != NULL; elem = elem->next) {
-        gpointer data = elem->data;
+    waitingForPlayerLabel = GTK_LABEL(gtk_builder_get_object(builder, "lobby_waiting_for_player_label"));
 
-        GtkWidget *widget = GTK_WIDGET(data);
-        const gchar *name = gtk_widget_get_name(widget);
+    g_signal_connect(choose4, "clicked", G_CALLBACK(choose_size_4), NULL);
+    g_signal_connect(choose5, "clicked", G_CALLBACK(choose_size_5), NULL);
 
-        if (strcmp(name, "lobby_player_1_controls") == 0) {
-            player1Controls = GTK_GRID(widget);
-            init_player_1_controls(GTK_GRID(widget));
-        } else if (strcmp(name, "lobby_waiting_for_player_label") == 0) {
-            waitingForPlayerLabel = GTK_LABEL(widget);
-        }
-    }
 }
 
-static void choose_columns(GtkWidget *widget) {
-    const gchar *name = gtk_widget_get_name(widget);
+static void choose_size_4() {
+    choose_size(4);
+}
 
-    chosenColumns = 4;
-    if (strcmp(name, "lobby_choose_columns_5_button") == 0) {
-        chosenColumns = 5;
-    }
+static void choose_size_5() {
+    choose_size(5);
+}
+
+static void choose_size(int size) {
+    chosenSize = size;
 
     gtk_widget_hide(GTK_WIDGET(player1Controls));
     gtk_widget_show(GTK_WIDGET(waitingForPlayerLabel));
-    connection_init(window, PLAYER_ONE);
-}
-
-static void init_player_1_controls(GtkGrid *controls) {
-    GList *children = gtk_container_get_children(GTK_CONTAINER(controls));
-
-    for (GList *elem = children; elem != NULL; elem = elem->next) {
-        gpointer data = elem->data;
-
-        GtkWidget *widget = GTK_WIDGET(data);
-        const gchar *name = gtk_widget_get_name(widget);
-
-        if (strcmp(name, "lobby_choose_columns_4_button") == 0) {
-            g_signal_connect(widget, "clicked", G_CALLBACK(choose_columns), NULL);
-        } else if (strcmp(name, "lobby_choose_columns_5_button") == 0) {
-            g_signal_connect(widget, "clicked", G_CALLBACK(choose_columns), NULL);
-        }
-    }
+    connection_init(PLAYER_ONE);
 }
 
 void lobby_show(PlayerType pType) {
     playerType = pType;
-    connectionEstablished = false;
-    chosenColumns = 0;
+    chosenSize = 0;
 
     if (playerType == PLAYER_ONE) {
         gtk_widget_show(GTK_WIDGET(player1Controls));
@@ -86,20 +63,20 @@ void lobby_show(PlayerType pType) {
     gtk_label_set_text(GTK_LABEL(waitingForPlayerLabel), text);
 
     if (playerType == PLAYER_TWO) {
-        connection_init(window, PLAYER_TWO);
+        connection_init(PLAYER_TWO);
     }
 }
 
 //For player 1
 void lobby_connection_established() {
     if (playerType == PLAYER_ONE) {
-        connection_send_columns(chosenColumns);
-        app_window_start_game(window, chosenColumns, playerType);
+        connection_send_columns(chosenSize);
+        app_start_game(chosenSize, playerType);
     }
 }
 
 //For player 2
 void lobby_columns_received(int columns) {
-    chosenColumns = columns;
-    app_window_start_game(window, chosenColumns, playerType);
+    chosenSize = columns;
+    app_start_game(chosenSize, playerType);
 }

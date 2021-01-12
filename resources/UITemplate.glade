@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <template class="AppWindow" parent="GtkApplicationWindow">
+  <object class="GtkApplicationWindow" id="appWindow">
     <property name="can_focus">False</property>
     <property name="has_resize_grip">True</property>
     <child type="titlebar">
@@ -21,23 +21,8 @@
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Play as Player 1</property>
-                <property name="name">menu_play_as_1_button</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">2</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="menu_play_as_2_button">
                 <property name="label" translatable="yes">Play as Player 2</property>
-                <property name="name">menu_play_as_2_button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -49,9 +34,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="menu_how_to_play_button">
                 <property name="label" translatable="yes">How to play?</property>
-                <property name="name">menu_how_to_play_button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -63,9 +47,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="menu_quit_button">
                 <property name="label" translatable="yes">Quit</property>
-                <property name="name">menu_quit_button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -77,8 +60,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="name">title</property>
+              <object class="GtkLabel" id="menu_title">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Tic Tac Toe</property>
@@ -95,8 +77,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="name">authorInfo</property>
+              <object class="GtkLabel" id="menu_author_info">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Author and project info</property>
@@ -105,6 +86,19 @@
               <packing>
                 <property name="left_attach">4</property>
                 <property name="top_attach">5</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="menu_play_as_1_button">
+                <property name="label" translatable="yes">Play as Player 1</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
                 <property name="width">2</property>
               </packing>
             </child>
@@ -373,7 +367,7 @@ Loses: 1</property>
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="how_to_play_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">This is how to play the game
@@ -390,9 +384,8 @@ That's right</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="how_to_play_back_button">
                 <property name="label" translatable="yes">Back to menu/game</property>
-                <property name="name">how_to_play_back_button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -422,8 +415,7 @@ That's right</property>
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkGrid" id="player-1-controls">
-                <property name="name">lobby_player_1_controls</property>
+              <object class="GtkGrid" id="lobby_player_1_controls">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">30</property>
@@ -431,11 +423,10 @@ That's right</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel">
-                    <property name="name">lobby_choose_columns_label</property>
+                  <object class="GtkLabel" id="lobby_choose_size_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Choose numbers of columns</property>
+                    <property name="label" translatable="yes">Choose numbers of elements required to win (horizontally, vertically or diagonally)</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -444,9 +435,8 @@ That's right</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="lobby_choose_size_4_button">
                     <property name="label" translatable="yes">4</property>
-                    <property name="name">lobby_choose_columns_4_button</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -458,9 +448,8 @@ That's right</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="lobby_choose_size_5_button">
                     <property name="label" translatable="yes">5</property>
-                    <property name="name">lobby_choose_columns_5_button</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -471,15 +460,6 @@ That's right</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -489,8 +469,7 @@ That's right</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="name">lobby_waiting_for_player_label</property>
+              <object class="GtkLabel" id="lobby_waiting_for_player_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Waiting for Player 1/2</property>
@@ -503,12 +482,6 @@ That's right</property>
                 <property name="top_attach">0</property>
                 <property name="width">4</property>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
             </child>
             <child>
               <placeholder/>
@@ -572,5 +545,5 @@ That's right</property>
         </child>
       </object>
     </child>
-  </template>
+  </object>
 </interface>

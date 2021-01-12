@@ -16,7 +16,7 @@ LINK_DIRECTORIES(${GTK3_LIBRARY_DIRS})
 ADD_DEFINITIONS(${GTK3_CFLAGS_OTHER})
 
 # Add an executable compiled from main.c
-ADD_EXECUTABLE(Tic_Tac_Toe_C main.c resources/resources.c src/app/app.c src/app/app.h src/app/appwin.c src/app/appwin.h src/menu/menu.c src/menu/menu.h src/how_to_play/how_to_play.c src/how_to_play/how_to_play.h src/connection/fifo.h src/connection/lin_fifo.c src/connection/connection.c src/connection/connection.h src/constants/constants.h src/lobby/lobby.c src/lobby/lobby.h)
+ADD_EXECUTABLE(Tic_Tac_Toe_C main.c resources/resources.c src/menu/menu.c src/menu/menu.h src/how_to_play/how_to_play.c src/how_to_play/how_to_play.h src/connection/fifo.h src/connection/lin_fifo.c src/connection/connection.c src/connection/connection.h src/constants/constants.h src/lobby/lobby.c src/lobby/lobby.h src/app/app.c src/app/app.h)
 
 # Link the target to the GTK+ libraries
 TARGET_LINK_LIBRARIES(Tic_Tac_Toe_C ${GTK3_LIBRARIES})

@@ -1,28 +1,107 @@
+
 #include <gtk/gtk.h>
-
 #include "app.h"
-#include "appwin.h"
+#include "../menu/menu.h"
+#include "../connection/connection.h"
+#include "../lobby/lobby.h"
+#include "../how_to_play/how_to_play.h"
 
-struct _App {
-    GtkApplication parent;
-};
+typedef struct pages {
+    GtkStack *stack;
+    GtkGrid *mainMenuPage;
+    GtkGrid *gameplayPage;
+    GtkGrid *howToPlayPage;
+    GtkGrid *lobbyPage;
+    GtkGrid *lostConnectionPage;
+} Pages;
 
-G_DEFINE_TYPE(App, app, GTK_TYPE_APPLICATION);
+static GtkBuilder *builder;
+static GtkWindow *window;
+static Pages pages;
 
-static void app_init(App *app) {}
+static void app_show_page(GtkGrid *page);
+static void init_pages();
 
-static void app_activate(GApplication *gApp) {
-    AppWindow *win;
+void app_init(int argc, char *argv[]) {
+    GError *error = NULL;
 
-    win = app_window_new(APP_APP(gApp));
-    gtk_window_present(GTK_WINDOW(win));
+    /* Construct a GtkBuilder instance and load our UI description */
+    builder = gtk_builder_new();
+    if (gtk_builder_add_from_resource(builder, "/com/github/bartacc/tictactoe-c/UITemplate.glade", &error) == 0) {
+        g_printerr("Error loading file: %s\n", error->message);
+        g_clear_error(&error);
+        return;
+    }
+
+    /* Connect signal handlers to the constructed widgets. */
+    window = GTK_WINDOW(gtk_builder_get_object(builder, "appWindow"));
+    g_signal_connect (window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+    init_pages();
+
+    gtk_widget_show_all(GTK_WIDGET(window));
 }
 
-static void app_class_init(AppClass *class) {
-    G_APPLICATION_CLASS(class)->activate = app_activate;
+static void init_pages() {
+    pages.stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+
+    pages.mainMenuPage = GTK_GRID(gtk_builder_get_object(builder, "mainMenuPage"));
+    pages.gameplayPage = GTK_GRID(gtk_builder_get_object(builder, "gameplayPage"));
+    pages.howToPlayPage = GTK_GRID(gtk_builder_get_object(builder, "howToPlayPage"));
+    pages.lobbyPage = GTK_GRID(gtk_builder_get_object(builder, "lobbyPage"));
+    pages.lostConnectionPage = GTK_GRID(gtk_builder_get_object(builder, "lostConnectionPage"));
+
+    menu_init(builder);
+    lobby_init(builder);
+    how_to_play_init(builder);
+
+    app_show_page(pages.mainMenuPage);
 }
 
-App *app_new(void) {
-    return g_object_new(APP_TYPE, "application-id", "com.github.bartacc.tictactoe-c",
-                        "flags", G_APPLICATION_NON_UNIQUE, NULL);
+static void app_show_page(GtkGrid *page) {
+    gtk_stack_set_visible_child(pages.stack, GTK_WIDGET(page));
+}
+
+void app_menu() {
+    connection_drop();
+    app_show_page(pages.mainMenuPage);
+}
+
+void app_play_as_1() {
+    lobby_show(PLAYER_ONE);
+    app_show_page(pages.lobbyPage);
+}
+
+void app_play_as_2() {
+    lobby_show(PLAYER_TWO);
+    app_show_page(pages.lobbyPage);
+}
+
+void app_how_to_play_show(GtkWidget *widget, const gchar *fromPage) {
+    how_to_play_show(fromPage);
+    app_show_page(pages.howToPlayPage);
+}
+
+void app_how_to_play_hide(GtkWidget *widget, const gchar *backToPage) {
+    if (strcmp(backToPage, MENU_PAGE) == 0) {
+        app_show_page(pages.mainMenuPage);
+    } else if (strcmp(backToPage, GAMEPLAY_PAGE) == 0) {
+        app_show_page(pages.gameplayPage);
+    }
+}
+
+void app_start_game(int columns, PlayerType pType) {
+    app_show_page(pages.gameplayPage);
+}
+
+void app_show_error(char *error) {
+    GtkWidget *dialog;
+    dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT,
+                                    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "%s", error);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
+void app_quit() {
+    gtk_main_quit();
 }

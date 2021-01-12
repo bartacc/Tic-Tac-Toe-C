@@ -2,5 +2,6 @@
 <gresources>
     <gresource prefix="/com/github/bartacc/tictactoe-c">
         <file preprocess="xml-stripblanks">UITemplate.glade</file>
+        <file>style.css</file>
     </gresource>
 </gresources>

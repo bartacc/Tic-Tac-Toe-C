@@ -33,6 +33,11 @@ void app_init(int argc, char *argv[]) {
         return;
     }
 
+    /* Add CSS */
+    GtkCssProvider *cssProvider = gtk_css_provider_new();
+    gtk_css_provider_load_from_resource(cssProvider, "/com/github/bartacc/tictactoe-c/style.css");
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
     /* Connect signal handlers to the constructed widgets. */
     window = GTK_WINDOW(gtk_builder_get_object(builder, "appWindow"));
     g_signal_connect (window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -63,7 +68,6 @@ static void app_show_page(GtkGrid *page) {
 }
 
 void app_menu() {
-    connection_drop();
     app_show_page(pages.mainMenuPage);
 }
 

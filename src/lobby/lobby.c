@@ -65,8 +65,6 @@ static void init_player_1_controls(GtkGrid *controls) {
 }
 
 void lobby_show(PlayerType pType) {
-    app_window_show_error(window, "This is an error");
-
     playerType = pType;
     connectionEstablished = false;
     chosenColumns = 0;

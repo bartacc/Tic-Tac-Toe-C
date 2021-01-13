@@ -22,6 +22,7 @@ static Pages pages;
 
 static void app_show_page(GtkGrid *page);
 static void init_pages();
+static void app_play_as_1_with_size(int size);
 
 void app_init(int argc, char *argv[]) {
     GError *error = NULL;
@@ -44,6 +45,14 @@ void app_init(int argc, char *argv[]) {
     g_signal_connect (window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     init_pages();
+
+    if (argc > 1) {
+        if (*argv[1] == '1') {
+            app_play_as_1_with_size(5);
+        } else if (*argv[1] == '2') {
+            app_play_as_2();
+        }
+    }
 
     gtk_widget_show_all(GTK_WIDGET(window));
 }
@@ -71,6 +80,11 @@ static void app_show_page(GtkGrid *page) {
 
 void app_menu() {
     app_show_page(pages.mainMenuPage);
+}
+
+static void app_play_as_1_with_size(int size) {
+    lobby_show_with_size(PLAYER_ONE, size);
+    app_show_page(pages.lobbyPage);
 }
 
 void app_play_as_1() {

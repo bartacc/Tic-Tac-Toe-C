@@ -80,3 +80,9 @@ void lobby_columns_received(int columns) {
     chosenSize = columns;
     app_start_game(chosenSize, playerType);
 }
+
+//Used for starting the game from command-line
+void lobby_show_with_size(PlayerType pType, int size) {
+    lobby_show(pType);
+    choose_size(size);
+}

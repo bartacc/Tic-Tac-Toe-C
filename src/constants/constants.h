@@ -29,7 +29,7 @@
 #define CSS_REMOVE_PLACEHOLDER "remove-placeholder"
 
 typedef enum playerType {
-    PLAYER_ONE, PLAYER_TWO
+    PLAYER_ONE, PLAYER_TWO, PLAYER_NONE
 } PlayerType;
 
 typedef enum element {
@@ -41,5 +41,6 @@ typedef enum placeholderType {
 } PlaceholderType;
 
 Element get_element(PlayerType pType);
+PlayerType get_player(Element element);
 
 #endif //TIC_TAC_TOE_C_CONSTANTS_H

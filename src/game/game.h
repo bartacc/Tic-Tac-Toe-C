@@ -6,7 +6,7 @@
 #include "../constants/constants.h"
 
 void game_init(GtkBuilder *builder);
-void game_start(int columns, PlayerType pType);
+void game_start(int elementsToWin, PlayerType pType);
 void game_move_push(int column, bool wasColumnReplaced);
 void game_move_replace(int column);
 

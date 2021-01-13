@@ -7,8 +7,7 @@
 static const gchar *GAMEPLAY_PAGE_STRING = GAMEPLAY_PAGE;
 
 static GtkGrid *board;
-static GtkLabel *stateLabel, *endGameLabel;
-static GtkBox *endGameBox;
+static GtkLabel *stateLabel, *wonLostCountLabel;
 
 static Element boardElements[BOARD_SIZE][BOARD_SIZE];
 static PlayerType player;
@@ -18,21 +17,21 @@ static void play_again();
 static gboolean on_frame_click(GtkWidget *widget);
 static bool is_move_possible(int column);
 static void set_element_label(int x, int y, Element element);
+static void set_state_label();
 
 void game_init(GtkBuilder *builder) {
     GtkButton *quitButton, *howToPlayButton, *playAgainButton;
 
     board = GTK_GRID(gtk_builder_get_object(builder, "gameplay_board"));
-    endGameBox = GTK_BOX(gtk_builder_get_object(builder, "gameplay-end-game-box"));
     quitButton = GTK_BUTTON(gtk_builder_get_object(builder, "gameplay_quit_button"));
     howToPlayButton = GTK_BUTTON(gtk_builder_get_object(builder, "gameplay_how_to_play_button"));
     playAgainButton = GTK_BUTTON(gtk_builder_get_object(builder, "gameplay-play-again-button"));
     stateLabel = GTK_LABEL(gtk_builder_get_object(builder, "gameplay_state_label"));
-    endGameLabel = GTK_LABEL(gtk_builder_get_object(builder, "gameplay-end-game-label"));
+    wonLostCountLabel = GTK_LABEL(gtk_builder_get_object(builder, "gameplay-won-lost-count-label"));
 
     g_signal_connect(quitButton, "clicked", G_CALLBACK(app_quit), NULL);
     g_signal_connect(howToPlayButton, "clicked", G_CALLBACK(app_how_to_play_show), GAMEPLAY_PAGE_STRING);
-    g_signal_connect(quitButton, "clicked", G_CALLBACK(play_again), NULL);
+    g_signal_connect(playAgainButton, "clicked", G_CALLBACK(play_again), NULL);
 
 
     for (int x = 0; x < BOARD_SIZE; x++) {
@@ -60,7 +59,7 @@ void game_start(int columns, PlayerType pType) {
     whoseTurn = PLAYER_ONE;
     player = pType;
 
-    gtk_widget_hide(GTK_WIDGET(endGameBox));
+    set_state_label();
 
     for (int x = 0; x < BOARD_SIZE; x++) {
         for (int y = 0; y < BOARD_SIZE; y++) {
@@ -122,6 +121,7 @@ void game_move_push(int column, bool wasColumnReplaced) {
     }
 
     whoseTurn = (whoseTurn == PLAYER_ONE) ? PLAYER_TWO : PLAYER_ONE;
+    set_state_label();
 }
 
 void game_move_replace(int column) {
@@ -158,4 +158,20 @@ static void set_element_label(int x, int y, Element element) {
         elementText = "O";
     }
     gtk_label_set_text(label, elementText);
+}
+
+static void set_state_label() {
+    gchar state[MAX_CONSTANT_LENGTH];
+
+    if (whoseTurn == player) {
+        strcpy(state, "Your move (");
+        strcat(state, player == PLAYER_ONE ? "X" : "O");
+        strcat(state, ")");
+        gtk_label_set_text(stateLabel, state);
+    } else {
+        strcpy(state, "Opponent's move (");
+        strcat(state, player == PLAYER_ONE ? "O" : "X");
+        strcat(state, ")");
+        gtk_label_set_text(stateLabel, state);
+    }
 }

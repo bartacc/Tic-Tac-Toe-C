@@ -135,6 +135,8 @@ static gboolean on_hover_enter(GtkWidget *widget) {
             set_element_label(x, firstEmptyY - 1, get_element(player), PLACEHOLDER_ADD);
         }
     }
+
+    return TRUE;
 }
 
 static gboolean on_hover_leave(GtkWidget *widget) {
@@ -145,6 +147,8 @@ static gboolean on_hover_leave(GtkWidget *widget) {
     for (int currentY = 0; currentY < BOARD_SIZE; currentY++) {
         set_element_label(x, currentY, boardElements[x][currentY], NOT_PLACEHOLDER);
     }
+
+    return TRUE;
 }
 
 static bool is_move_possible(int column) {

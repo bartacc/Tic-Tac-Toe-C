@@ -2,6 +2,18 @@ label {
     font: 16px SansSerif;
 }
 
-frame {
+label.add-placeholder {
+    color: green;
+}
+
+label.remove-placeholder {
+    color: red;
+}
+
+.gameplay-frame {
     border: white solid 1px;
+}
+
+.gameplay-frame-for-placeholder {
+    border: none;
 }

@@ -78,6 +78,17 @@ static void app_show_page(GtkGrid *page) {
     gtk_stack_set_visible_child(pages.stack, GTK_WIDGET(page));
 }
 
+void app_add_css_class_to_widget(GtkWidget *widget, const gchar *cssClass) {
+    GtkStyleContext *styleContext = gtk_widget_get_style_context(widget);
+    gtk_style_context_add_class(styleContext, cssClass);
+
+}
+
+void app_remove_css_class_from_widget(GtkWidget *widget, const gchar *cssClass) {
+    GtkStyleContext *styleContext = gtk_widget_get_style_context(widget);
+    gtk_style_context_remove_class(styleContext, cssClass);
+}
+
 void app_menu() {
     app_show_page(pages.mainMenuPage);
 }

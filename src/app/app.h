@@ -15,7 +15,7 @@ void app_play_as_1();
 void app_play_as_2();
 void app_how_to_play_show(GtkWidget *widget, const gchar *fromPage);
 void app_how_to_play_hide(GtkWidget *widget, const gchar *backToPage);
-void app_start_game(int columns, PlayerType pType);
+void app_start_game(int size, PlayerType pType);
 void app_show_error(char *error);
 void app_quit();
 

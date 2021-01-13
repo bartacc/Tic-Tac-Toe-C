@@ -7,7 +7,7 @@
 void lobby_init(GtkBuilder *builder);
 void lobby_show(PlayerType playerType);
 void lobby_connection_established();
-void lobby_columns_received(int columns);
+void lobby_size_received(int size);
 void lobby_show_with_size(PlayerType pType, int size);
 
 #endif //TIC_TAC_TOE_C_LOBBY_H

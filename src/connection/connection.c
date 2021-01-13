@@ -71,13 +71,13 @@ static void connection_accept() {
     printf("%s\n", "Sent accept connection");
 }
 
-void connection_send_columns(int columns) {
-    if (columns == 4) {
-        send_string_to_pipe(currentPipe, COLUMNS_4);
+void connection_send_size(int size) {
+    if (size == 4) {
+        send_string_to_pipe(currentPipe, SIZE_4);
     } else {
-        send_string_to_pipe(currentPipe, COLUMNS_5);
+        send_string_to_pipe(currentPipe, SIZE_5);
     }
-    printf("%s%d\n", "Sent columns_", columns);
+    printf("%s%d\n", "Sent size_", size);
 }
 
 void connection_send_move(char *prefix, int column) {
@@ -158,13 +158,13 @@ static gboolean get_text() {
             printf("%s\n", "Received drop request");
             act_on_state_change();
         }
-        if (strstr(input, COLUMNS_4) != NULL) {
-            printf("%s\n", "Received columns_4");
-            lobby_columns_received(4);
+        if (strstr(input, SIZE_4) != NULL) {
+            printf("Received %s\n", SIZE_4);
+            lobby_size_received(4);
         }
-        if (strstr(input, COLUMNS_5) != NULL) {
-            printf("%s\n", "Received columns_5");
-            lobby_columns_received(5);
+        if (strstr(input, SIZE_5) != NULL) {
+            printf("Received %s\n", SIZE_5);
+            lobby_size_received(5);
         }
         if (strstr(input, MOVE_PUSH_PREFIX) != NULL) {
             char *stringPtr = strstr(input, MOVE_PUSH_PREFIX);

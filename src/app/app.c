@@ -121,8 +121,8 @@ void app_how_to_play_hide(GtkWidget *widget, const gchar *backToPage) {
     }
 }
 
-void app_start_game(int columns, PlayerType pType) {
-    game_start(columns, pType);
+void app_start_game(int size, PlayerType pType) {
+    game_start(size, pType);
     app_show_page(pages.gameplayPage);
 }
 

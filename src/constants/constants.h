@@ -8,8 +8,8 @@
 #define DROP_CONNECTION "drop_connection"
 #define ACCEPT_CONNECTION "accept_connection"
 
-#define COLUMNS_4 "columns_4"
-#define COLUMNS_5 "columns_5"
+#define SIZE_4 "size_4"
+#define SIZE_5 "size_5"
 
 #define MOVE_PUSH_PREFIX "move_push_"
 #define MOVE_REPLACE_PREFIX "move_replace_"

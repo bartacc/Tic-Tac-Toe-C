@@ -70,14 +70,14 @@ void lobby_show(PlayerType pType) {
 //For player 1
 void lobby_connection_established() {
     if (playerType == PLAYER_ONE) {
-        connection_send_columns(chosenSize);
+        connection_send_size(chosenSize);
         app_start_game(chosenSize, playerType);
     }
 }
 
 //For player 2
-void lobby_columns_received(int columns) {
-    chosenSize = columns;
+void lobby_size_received(int size) {
+    chosenSize = size;
     app_start_game(chosenSize, playerType);
 }
 

@@ -50,7 +50,7 @@ void game_set_element_label(GtkGrid *board, int x, int y, Element element, Place
 }
 
 void game_set_state_label(GtkLabel *stateLabel, PlayerType whoseTurn, PlayerType player) {
-    gchar state[MAX_CONSTANT_LENGTH];
+    gchar state[MAX_STRING_LENGTH];
 
     if (whoseTurn == player) {
         strcpy(state, "Your move (");
@@ -63,4 +63,11 @@ void game_set_state_label(GtkLabel *stateLabel, PlayerType whoseTurn, PlayerType
         strcat(state, ")");
         gtk_label_set_text(stateLabel, state);
     }
+}
+
+void game_set_won_lost_count_label(GtkLabel *wonLostCountLabel, int gamesWon, int gamesLost) {
+    gchar text[MAX_STRING_LENGTH];
+    sprintf(text, "Games won: %d\nGames lost: %d", gamesWon, gamesLost);
+
+    gtk_label_set_text(wonLostCountLabel, text);
 }

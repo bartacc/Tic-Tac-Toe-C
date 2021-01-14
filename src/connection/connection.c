@@ -19,7 +19,6 @@ typedef struct state {
     bool connectionEstablished;
 } State;
 
-static PlayerType currentPlayer;
 static State state;
 static PipesPtr currentPipe = NULL;
 static gint timeoutID = -1;
@@ -40,7 +39,6 @@ static void init_state() {
 
 void connection_init(PlayerType playerType) {
     printf("%s\n", "Connection init");
-    currentPlayer = playerType;
     init_state();
     if (currentPipe != NULL) {
         close_pipes(currentPipe);
@@ -84,7 +82,7 @@ void connection_send_size(int size) {
 }
 
 void connection_send_move(char *prefix, int column) {
-    char operation[MAX_CONSTANT_LENGTH];
+    char operation[MAX_STRING_LENGTH];
     strcpy(operation, prefix);
 
     char columnString[BOARD_SIZE_MAX_DIGITS + 1];
@@ -141,8 +139,8 @@ static gboolean get_text() {
         return TRUE;
     }
 
-    gchar input[MAX_CONSTANT_LENGTH];
-    if (get_string_from_pipe(currentPipe, input, MAX_CONSTANT_LENGTH)) {
+    gchar input[MAX_STRING_LENGTH];
+    if (get_string_from_pipe(currentPipe, input, MAX_STRING_LENGTH)) {
         printf("%s: %s\n", "Incoming operation", input);
         if (strstr(input, REQUEST_CONNECTION) != NULL) {
             state.requestReceived = true;
@@ -192,7 +190,7 @@ static gboolean get_text() {
         }
         if (strstr(input, PLAY_AGAIN)) {
             printf("Received %s\n", PLAY_AGAIN);
-            modal_play_again(&currentPlayer);
+            game_opponent_concede();
         }
     }
     return TRUE;

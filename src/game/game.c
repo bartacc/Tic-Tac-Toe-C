@@ -16,6 +16,9 @@ static Element boardElements[BOARD_SIZE][BOARD_SIZE];
 static PlayerType player;
 static PlayerType whoseTurn;
 static int elementsToWin;
+static int gamesWon, gamesLost;
+
+static bool check_for_game_end();
 
 //Gtk callback functions
 static gboolean on_hover_enter(GtkWidget *widget);
@@ -24,6 +27,9 @@ static gboolean on_frame_click(GtkWidget *widget);
 static void play_again();
 
 void game_init(GtkBuilder *builder) {
+    gamesWon = 0;
+    gamesLost = 0;
+
     GtkButton *quitButton, *howToPlayButton, *playAgainButton;
 
     board = GTK_GRID(gtk_builder_get_object(builder, "gameplay_board"));
@@ -72,6 +78,7 @@ void game_start(int elementsInSequenceToWin, PlayerType pType) {
     elementsToWin = elementsInSequenceToWin;
 
     game_set_state_label(stateLabel, whoseTurn, player);
+    game_set_won_lost_count_label(wonLostCountLabel, gamesWon, gamesLost);
 
     for (int x = 0; x < BOARD_SIZE; x++) {
         for (int y = 0; y < BOARD_SIZE; y++) {
@@ -89,23 +96,36 @@ void game_move_push(int column, bool wasColumnReplaced) {
         connection_send_move(MOVE_PUSH_PREFIX, column);
     }
 
+    if (!check_for_game_end()) {
+        whoseTurn = (whoseTurn == PLAYER_ONE) ? PLAYER_TWO : PLAYER_ONE;
+        game_set_state_label(stateLabel, whoseTurn, player);
+    }
+}
+
+static bool check_for_game_end() {
     if (!game_are_any_moves_left(boardElements)) {
         printf("A tie!");
         whoseTurn = PLAYER_NONE;
         modal_end_game(&player, PLAYER_NONE);
-        return;
+        return true;
     }
 
     PlayerType winner = game_check_winner(boardElements, elementsToWin);
     if (winner != PLAYER_NONE) {
         printf("Player %s wins!\n", winner == PLAYER_ONE ? "1" : "2");
+
+        if (winner == player) {
+            gamesWon++;
+        } else {
+            gamesLost++;
+        }
+
         whoseTurn = PLAYER_NONE;
         modal_end_game(&player, winner);
-        return;
+        return true;
     }
 
-    whoseTurn = (whoseTurn == PLAYER_ONE) ? PLAYER_TWO : PLAYER_ONE;
-    game_set_state_label(stateLabel, whoseTurn, player);
+    return false;
 }
 
 void game_move_replace(int column) {
@@ -130,7 +150,13 @@ void game_move_replace(int column) {
     game_move_push(column, true);
 }
 
+void game_opponent_concede() {
+    gamesWon++;
+    modal_play_again(&player);
+}
+
 static void play_again() {
+    gamesLost++;
     connection_send_play_again();
     if (player == PLAYER_ONE) {
         app_play_as_1();

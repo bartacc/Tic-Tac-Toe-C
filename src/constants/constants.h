@@ -1,7 +1,7 @@
 #ifndef TIC_TAC_TOE_C_CONSTANTS_H
 #define TIC_TAC_TOE_C_CONSTANTS_H
 
-#define MAX_CONSTANT_LENGTH 200
+#define MAX_STRING_LENGTH 200
 
 //Connection
 #define REQUEST_CONNECTION "request_connection"

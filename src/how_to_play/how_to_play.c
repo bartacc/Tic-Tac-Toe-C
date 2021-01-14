@@ -1,7 +1,7 @@
 #include "how_to_play.h"
 #include "../app/app.h"
 
-static gchar previousPage[MAX_CONSTANT_LENGTH];
+static gchar previousPage[MAX_STRING_LENGTH];
 
 void how_to_play_init(GtkBuilder *builder) {
     GtkButton *backButton;

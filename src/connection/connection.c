@@ -5,6 +5,7 @@
 #include "../lobby/lobby.h"
 #include "../app/app.h"
 #include "../game/game.h"
+#include "../modals/modals.h"
 
 typedef struct state {
     bool requestReceived;
@@ -18,6 +19,7 @@ typedef struct state {
     bool connectionEstablished;
 } State;
 
+static PlayerType currentPlayer;
 static State state;
 static PipesPtr currentPipe = NULL;
 static gint timeoutID = -1;
@@ -38,6 +40,7 @@ static void init_state() {
 
 void connection_init(PlayerType playerType) {
     printf("%s\n", "Connection init");
+    currentPlayer = playerType;
     init_state();
     if (currentPipe != NULL) {
         close_pipes(currentPipe);
@@ -97,6 +100,11 @@ void connection_send_move(char *prefix, int column) {
 
     send_string_to_pipe(currentPipe, operation);
     printf("Sent %s%s\n", prefix, columnString);
+}
+
+void connection_send_play_again() {
+    send_string_to_pipe(currentPipe, PLAY_AGAIN);
+    printf("Sent %s\n", PLAY_AGAIN);
 }
 
 static int read_move_column(char *numberPtr) {
@@ -181,6 +189,10 @@ static gboolean get_text() {
             game_move_replace(column);
 
             printf("Received %s%d\n", MOVE_REPLACE_PREFIX, column);
+        }
+        if (strstr(input, PLAY_AGAIN)) {
+            printf("Received %s\n", PLAY_AGAIN);
+            modal_play_again(&currentPlayer);
         }
     }
     return TRUE;

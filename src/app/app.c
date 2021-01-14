@@ -6,6 +6,7 @@
 #include "../lobby/lobby.h"
 #include "../how_to_play/how_to_play.h"
 #include "../game/game.h"
+#include "../modals/modals.h"
 
 typedef struct pages {
     GtkStack *stack;
@@ -66,6 +67,7 @@ static void init_pages() {
     pages.lobbyPage = GTK_GRID(gtk_builder_get_object(builder, "lobbyPage"));
     pages.lostConnectionPage = GTK_GRID(gtk_builder_get_object(builder, "lostConnectionPage"));
 
+    modals_init(window);
     menu_init(builder);
     lobby_init(builder);
     how_to_play_init(builder);

@@ -14,6 +14,8 @@
 #define MOVE_PUSH_PREFIX "move_push_"
 #define MOVE_REPLACE_PREFIX "move_replace_"
 
+#define PLAY_AGAIN "play_again"
+
 //Pages
 #define GAMEPLAY_PAGE "gameplay_page"
 #define MENU_PAGE "menu_page"

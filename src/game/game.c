@@ -5,6 +5,7 @@
 #include "utils/game_gtk_utils.h"
 #include "../app/app.h"
 #include "../connection/connection.h"
+#include "../modals/modals.h"
 
 static const gchar *GAMEPLAY_PAGE_STRING = GAMEPLAY_PAGE;
 
@@ -91,7 +92,7 @@ void game_move_push(int column, bool wasColumnReplaced) {
     if (!game_are_any_moves_left(boardElements)) {
         printf("A tie!");
         whoseTurn = PLAYER_NONE;
-        //TODO: Popup dialog with a rematch option
+        modal_end_game(&player, PLAYER_NONE);
         return;
     }
 
@@ -99,7 +100,7 @@ void game_move_push(int column, bool wasColumnReplaced) {
     if (winner != PLAYER_NONE) {
         printf("Player %s wins!\n", winner == PLAYER_ONE ? "1" : "2");
         whoseTurn = PLAYER_NONE;
-        //TODO: Popup dialog with a rematch option
+        modal_end_game(&player, winner);
         return;
     }
 
@@ -130,7 +131,12 @@ void game_move_replace(int column) {
 }
 
 static void play_again() {
-    printf("%s\n", "Play again clicked");
+    connection_send_play_again();
+    if (player == PLAYER_ONE) {
+        app_play_as_1();
+    } else {
+        app_play_as_2();
+    }
 }
 
 static gboolean on_hover_enter(GtkWidget *widget) {

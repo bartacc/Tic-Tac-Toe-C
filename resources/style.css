@@ -1,17 +1,78 @@
+@define-color black #333333;
+@define-color white #cccccc;
+@define-color red #941c2f;
+@define-color green #277443;
+@define-color element-x-color #2e9bda;
+@define-color element-o-color #e6cc83;
+
+grid, stack {
+    background-image: none;
+    background-color: @black;
+}
+
+.dialog-widget {
+    background-color: @black;
+    color: @white;
+}
+
+.dialog-widget decoration {
+    background-color: purple;
+    color: purple;
+}
+
+.header {
+    font-size: 36px;
+    font-weight: bold;
+}
+
 label {
-    font: 16px SansSerif;
+    font-family: FreeMono, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: @white;
+}
+
+button {
+    border: 1px solid #000000;
+    outline: none;
+    box-shadow: none;
+    background-image: none;
+    background-color: @black;
+}
+
+button:hover {
+    border: 1px solid @red;
+    background-color: @black;
+}
+
+button:active {
+    border: 1px solid alpha(@red, 0.5);
+    background-color: @black;
+}
+
+label.element-x, label.element-o, label.add-placeholder, label.remove-placeholder {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+label.element-x {
+    color: @element-x-color;
+}
+
+label.element-o {
+    color: @element-o-color;
 }
 
 label.add-placeholder {
-    color: green;
+    color: @green;
 }
 
 label.remove-placeholder {
-    color: red;
+    color: @red;
 }
 
 .gameplay-frame {
-    border: white solid 1px;
+    border: @white solid 1px;
 }
 
 .gameplay-frame-for-placeholder {
@@ -19,5 +80,5 @@ label.remove-placeholder {
 }
 
 .gameplay-frame-in-winning-sequence {
-    background-color: pink;
+    background-color: @green;
 }

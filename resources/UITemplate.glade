@@ -26,25 +26,6 @@
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkBox" id="gameplay-end-game-box">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">1</property>
-                <property name="height">2</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkGrid" id="gameplay_board">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -127,6 +108,9 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Your move/Opponet's move</property>
+                <style>
+                  <class name="header"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -145,6 +129,9 @@ Lost: 1</property>
                 <property name="left_attach">3</property>
                 <property name="top_attach">0</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -204,10 +191,9 @@ Lost: 1</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Tic Tac Toe</property>
-                <attributes>
-                  <attribute name="font-desc" value="FreeMono Bold 36"/>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
+                <style>
+                  <class name="header"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -362,6 +348,10 @@ That's right</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Choose numbers of elements required to win (horizontally, vertically or diagonally)</property>
+                    <property name="wrap">True</property>
+                    <style>
+                      <class name="header"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -408,9 +398,9 @@ That's right</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Waiting for Player 1/2</property>
-                <attributes>
-                  <attribute name="font-desc" value="FreeMono Bold 36"/>
-                </attributes>
+                <style>
+                  <class name="header"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">0</property>

@@ -29,8 +29,11 @@
 #define CSS_GAMEPLAY_FRAME "gameplay-frame"
 #define CSS_GAMEPLAY_FRAME_IN_WINNING_SEQUENCE "gameplay-frame-in-winning-sequence"
 #define CSS_GAMEPLAY_FRAME_FOR_PLACEHOLDER "gameplay-frame-for-placeholder"
+
 #define CSS_ADD_PLACEHOLDER "add-placeholder"
 #define CSS_REMOVE_PLACEHOLDER "remove-placeholder"
+#define CSS_ELEMENT_X "element-x"
+#define CSS_ELEMENT_O "element-o"
 
 typedef enum playerType {
     PLAYER_ONE, PLAYER_TWO, PLAYER_NONE

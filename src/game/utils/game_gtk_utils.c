@@ -70,6 +70,13 @@ void game_set_element_label(GtkGrid *board, int x, int y, Element element, Place
             app_remove_css_class_from_widget(GTK_WIDGET(label), CSS_REMOVE_PLACEHOLDER);
             break;
     }
+
+    app_remove_css_class_from_widget(GTK_WIDGET(label), CSS_ELEMENT_X);
+    app_remove_css_class_from_widget(GTK_WIDGET(label), CSS_ELEMENT_O);
+    if (placeholderType == NOT_PLACEHOLDER) {
+        if (element == X) app_add_css_class_to_widget(GTK_WIDGET(label), CSS_ELEMENT_X);
+        else if (element == O) app_add_css_class_to_widget(GTK_WIDGET(label), CSS_ELEMENT_O);
+    }
 }
 
 void game_set_state_label(GtkLabel *stateLabel, PlayerType whoseTurn, PlayerType player) {

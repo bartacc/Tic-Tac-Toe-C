@@ -43,6 +43,7 @@ void app_init(int argc, char *argv[]) {
 
     /* Connect signal handlers to the constructed widgets. */
     window = GTK_WINDOW(gtk_builder_get_object(builder, "appWindow"));
+    gtk_window_set_default_size(window, 350, 350);
     g_signal_connect (window, "destroy", G_CALLBACK(app_quit), NULL);
 
     init_pages();

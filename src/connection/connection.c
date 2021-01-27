@@ -59,6 +59,8 @@ static void connection_request() {
 }
 
 void connection_drop() {
+    if (state.dropSent || state.dropReceived) return;
+
     if (currentPipe != NULL && state.connectionEstablished) {
         send_string_to_pipe(currentPipe, DROP_CONNECTION);
         printf("%s\n", "Sent drop request");
@@ -116,17 +118,15 @@ static int read_move_column(char *numberPtr) {
 }
 
 static void act_on_state_change() {
+    if (state.dropReceived) {
+        app_quit();
+    }
+
     if ((state.requestSent && state.requestReceived) || state.connectionAccepted) {
         init_state();
         state.connectionEstablished = true;
         printf("%s\n", "Connection has been established");
         lobby_connection_established();
-    } else if (state.dropSent || state.dropReceived) {
-        if (state.connectionEstablished) {
-            printf("%s\n", "Connection dropped");
-        }
-        init_state();
-        currentPipe = NULL;
     }
 }
 

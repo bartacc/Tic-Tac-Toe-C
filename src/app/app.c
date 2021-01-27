@@ -43,7 +43,7 @@ void app_init(int argc, char *argv[]) {
 
     /* Connect signal handlers to the constructed widgets. */
     window = GTK_WINDOW(gtk_builder_get_object(builder, "appWindow"));
-    g_signal_connect (window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect (window, "destroy", G_CALLBACK(app_quit), NULL);
 
     init_pages();
 
@@ -137,5 +137,6 @@ void app_show_error(char *error) {
 }
 
 void app_quit() {
+    connection_drop();
     gtk_main_quit();
 }

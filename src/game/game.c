@@ -14,6 +14,7 @@ static GtkLabel *stateLabel, *wonLostCountLabel;
 
 static Element boardElements[BOARD_SIZE][BOARD_SIZE];
 static PlayerType player;
+static PlayerType whoseFirstTurn = PLAYER_ONE;
 static PlayerType whoseTurn;
 static int elementsToWin;
 static int gamesWon, gamesLost;
@@ -73,7 +74,8 @@ void game_init(GtkBuilder *builder) {
 }
 
 void game_start(int elementsInSequenceToWin, PlayerType pType) {
-    whoseTurn = PLAYER_ONE;
+    whoseTurn = whoseFirstTurn;
+    whoseFirstTurn = whoseFirstTurn == PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
     player = pType;
     elementsToWin = elementsInSequenceToWin;
 

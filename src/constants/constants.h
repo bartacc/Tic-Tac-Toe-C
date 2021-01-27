@@ -2,6 +2,7 @@
 #define TIC_TAC_TOE_C_CONSTANTS_H
 
 #define MAX_STRING_LENGTH 200
+#define MAX_WINNING_SEQUENCE 5 //Maximum possible elements in a row/column/diagonal needed to win
 
 //Connection
 #define REQUEST_CONNECTION "request_connection"
@@ -26,6 +27,7 @@
 
 //CSS classes
 #define CSS_GAMEPLAY_FRAME "gameplay-frame"
+#define CSS_GAMEPLAY_FRAME_IN_WINNING_SEQUENCE "gameplay-frame-in-winning-sequence"
 #define CSS_GAMEPLAY_FRAME_FOR_PLACEHOLDER "gameplay-frame-for-placeholder"
 #define CSS_ADD_PLACEHOLDER "add-placeholder"
 #define CSS_REMOVE_PLACEHOLDER "remove-placeholder"

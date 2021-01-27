@@ -1,5 +1,15 @@
+#include <stdbool.h>
+#include <math.h>
 #include "game_gtk_utils.h"
 #include "../../app/app.h"
+
+static GtkBin *get_element_frame_at_index(GtkGrid *board, int x, int y) {
+    y = y + 1; //This offset is needed because row 0 is only for placeholder on hover
+
+    GtkBin *eventBox = GTK_BIN(gtk_grid_get_child_at(board, x, y));
+    GtkBin *frame = GTK_BIN(gtk_bin_get_child(eventBox));
+    return frame;
+}
 
 void game_get_event_box_coordinates(GtkGrid *board, GtkWidget *eventBox, int *x, int *y) {
     GValue xVal = G_VALUE_INIT;
@@ -17,11 +27,24 @@ void game_get_event_box_coordinates(GtkGrid *board, GtkWidget *eventBox, int *x,
     }
 }
 
-void game_set_element_label(GtkGrid *board, int x, int y, Element element, PlaceholderType placeholderType) {
-    y = y + 1; //This offset is needed because row 0 is only for placeholder on hover
+void game_set_winning_elements_background(GtkGrid *board, const int winnerSequence[], int elementsInSequence, bool clear) {
+    for (int i = 0; i < elementsInSequence * 2; i += 2) {
+        int x = winnerSequence[i];
+        int y = winnerSequence[i + 1];
 
-    GtkBin *eventBox = GTK_BIN(gtk_grid_get_child_at(board, x, y));
-    GtkBin *frame = GTK_BIN(gtk_bin_get_child(eventBox));
+        if (x == NAN || y == NAN) continue;
+
+        GtkBin *frame = get_element_frame_at_index(board, x, y);
+        if (clear) {
+            app_remove_css_class_from_widget(GTK_WIDGET(frame), CSS_GAMEPLAY_FRAME_IN_WINNING_SEQUENCE);
+        } else {
+            app_add_css_class_to_widget(GTK_WIDGET(frame), CSS_GAMEPLAY_FRAME_IN_WINNING_SEQUENCE);
+        }
+    }
+}
+
+void game_set_element_label(GtkGrid *board, int x, int y, Element element, PlaceholderType placeholderType) {
+    GtkBin *frame = get_element_frame_at_index(board, x, y);
     GtkLabel *label = GTK_LABEL(gtk_bin_get_child(frame));
 
     gchar *elementText = "";

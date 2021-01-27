@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
+#include <math.h>
 #include "game_utils.h"
 #include "game_gtk_utils.h"
 
@@ -51,10 +52,20 @@ PlayerType game_check_winner(Element boardElements[BOARD_SIZE][BOARD_SIZE], int 
     return PLAYER_NONE;
 }
 
+void game_clear_winner_sequence_array() {
+    for (int i = 0; i < MAX_WINNING_SEQUENCE * 2; i++) {
+        game_winner_sequence[i] = NAN;
+    }
+}
+
 static PlayerType check_winner_sequence_linear(Element boardElements[BOARD_SIZE][BOARD_SIZE], int elementsToWin, bool checkColumns) {
     for (int i = 0; i < BOARD_SIZE; i++) {
+        game_clear_winner_sequence_array();
+
         Element startElem = checkColumns ? boardElements[i][0] : boardElements[0][i];
         int elemsInSequence = 1;
+        game_winner_sequence[0] = checkColumns ? i : 0;
+        game_winner_sequence[1] = checkColumns ? 0 : i;
         for (int j = 1; j < BOARD_SIZE; j++) {
             int x = checkColumns ? i : j;
             int y = checkColumns ? j : i;
@@ -64,7 +75,11 @@ static PlayerType check_winner_sequence_linear(Element boardElements[BOARD_SIZE]
             } else {
                 startElem = boardElements[x][y];
                 elemsInSequence = 1;
+                game_clear_winner_sequence_array();
             }
+
+            game_winner_sequence[(elemsInSequence - 1) * 2] = x;
+            game_winner_sequence[(elemsInSequence - 1) * 2 + 1] = y;
 
             if (elemsInSequence >= elementsToWin) {
                 PlayerType winner = get_player(startElem);
@@ -85,13 +100,21 @@ static PlayerType check_winner_sequence_diagonal_up(Element boardElements[BOARD_
     int x = checkRightDiagonal ? startX + 1 : startX - 1;
     int y = startY - 1;
 
+    game_clear_winner_sequence_array();
+    game_winner_sequence[0] = x;
+    game_winner_sequence[1] = y;
+
     while (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
         if (boardElements[x][y] == startElem && startElem != EMPTY) {
             elemsInSequence++;
         } else {
             startElem = boardElements[x][y];
             elemsInSequence = 1;
+            game_clear_winner_sequence_array();
         }
+
+        game_winner_sequence[(elemsInSequence - 1) * 2] = x;
+        game_winner_sequence[(elemsInSequence - 1) * 2 + 1] = y;
 
         if (elemsInSequence >= elementsToWin) {
             PlayerType winner = get_player(startElem);

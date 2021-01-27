@@ -17,3 +17,7 @@ label.remove-placeholder {
 .gameplay-frame-for-placeholder {
     border: none;
 }
+
+.gameplay-frame-in-winning-sequence {
+    background-color: pink;
+}

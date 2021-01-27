@@ -30,6 +30,7 @@ static void play_again();
 void game_init(GtkBuilder *builder) {
     gamesWon = 0;
     gamesLost = 0;
+    game_clear_winner_sequence_array();
 
     GtkButton *quitButton, *howToPlayButton, *playAgainButton;
 
@@ -82,6 +83,9 @@ void game_start(int elementsInSequenceToWin, PlayerType pType) {
     game_set_state_label(stateLabel, whoseTurn, player);
     game_set_won_lost_count_label(wonLostCountLabel, gamesWon, gamesLost);
 
+    game_set_winning_elements_background(board, game_winner_sequence, elementsToWin, true);
+    game_clear_winner_sequence_array();
+
     for (int x = 0; x < BOARD_SIZE; x++) {
         for (int y = 0; y < BOARD_SIZE; y++) {
             boardElements[x][y] = EMPTY;
@@ -115,6 +119,8 @@ static bool check_for_game_end() {
     PlayerType winner = game_check_winner(boardElements, elementsToWin);
     if (winner != PLAYER_NONE) {
         printf("Player %s wins!\n", winner == PLAYER_ONE ? "1" : "2");
+
+        game_set_winning_elements_background(board, game_winner_sequence, elementsToWin, false);
 
         if (winner == player) {
             gamesWon++;

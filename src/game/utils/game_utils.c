@@ -97,12 +97,12 @@ static PlayerType check_winner_sequence_diagonal_up(Element boardElements[BOARD_
     Element startElem = boardElements[startX][startY];
     int elemsInSequence = 1;
 
+    game_clear_winner_sequence_array();
+    game_winner_sequence[0] = startX;
+    game_winner_sequence[1] = startY;
+
     int x = checkRightDiagonal ? startX + 1 : startX - 1;
     int y = startY - 1;
-
-    game_clear_winner_sequence_array();
-    game_winner_sequence[0] = x;
-    game_winner_sequence[1] = y;
 
     while (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
         if (boardElements[x][y] == startElem && startElem != EMPTY) {

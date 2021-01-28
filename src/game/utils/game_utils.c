@@ -83,7 +83,7 @@ static PlayerType check_winner_sequence_linear(Element boardElements[BOARD_SIZE]
 
             if (elemsInSequence >= elementsToWin) {
                 PlayerType winner = get_player(startElem);
-                printf("Player %s wins in columns!\n", winner == PLAYER_ONE ? "1" : "2");
+                g_debug("Player %s wins in columns!", winner == PLAYER_ONE ? "1" : "2");
                 return winner;
             }
         }
@@ -118,7 +118,7 @@ static PlayerType check_winner_sequence_diagonal_up(Element boardElements[BOARD_
 
         if (elemsInSequence >= elementsToWin) {
             PlayerType winner = get_player(startElem);
-            printf("Player %s wins diagonally!\n", winner == PLAYER_ONE ? "1" : "2");
+            g_debug("Player %s wins diagonally!", winner == PLAYER_ONE ? "1" : "2");
             return winner;
         }
 

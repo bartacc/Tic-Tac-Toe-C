@@ -38,7 +38,7 @@ static void init_state() {
 }
 
 void connection_init(PlayerType playerType) {
-    printf("%s\n", "Connection init");
+    g_debug("%s", "Connection init");
     init_state();
     if (currentPipe != NULL) {
         close_pipes(currentPipe);
@@ -54,7 +54,7 @@ void connection_init(PlayerType playerType) {
 static void connection_request() {
     send_string_to_pipe(currentPipe, REQUEST_CONNECTION);
     state.requestSent = true;
-    printf("%s\n", "Sent connection request");
+    g_debug("%s", "Sent connection request");
     act_on_state_change();
 }
 
@@ -63,7 +63,7 @@ void connection_drop() {
 
     if (currentPipe != NULL && state.connectionEstablished) {
         send_string_to_pipe(currentPipe, DROP_CONNECTION);
-        printf("%s\n", "Sent drop request");
+        g_debug("%s", "Sent drop request");
     }
     state.dropSent = true;
     act_on_state_change();
@@ -71,7 +71,7 @@ void connection_drop() {
 
 static void connection_accept() {
     send_string_to_pipe(currentPipe, ACCEPT_CONNECTION);
-    printf("%s\n", "Sent accept connection");
+    g_debug("%s", "Sent accept connection");
 }
 
 void connection_send_size(int size) {
@@ -80,7 +80,7 @@ void connection_send_size(int size) {
     } else {
         send_string_to_pipe(currentPipe, SIZE_5);
     }
-    printf("%s%d\n", "Sent size_", size);
+    g_debug("%s%d", "Sent size_", size);
 }
 
 void connection_send_move(char *prefix, int column) {
@@ -99,12 +99,12 @@ void connection_send_move(char *prefix, int column) {
     strcat(operation, columnString);
 
     send_string_to_pipe(currentPipe, operation);
-    printf("Sent %s%s\n", prefix, columnString);
+    g_debug("Sent %s%s", prefix, columnString);
 }
 
 void connection_send_play_again() {
     send_string_to_pipe(currentPipe, PLAY_AGAIN);
-    printf("Sent %s\n", PLAY_AGAIN);
+    g_debug("Sent %s", PLAY_AGAIN);
 }
 
 static int read_move_column(char *numberPtr) {
@@ -125,7 +125,7 @@ static void act_on_state_change() {
     if ((state.requestSent && state.requestReceived) || state.connectionAccepted) {
         init_state();
         state.connectionEstablished = true;
-        printf("%s\n", "Connection has been established");
+        g_debug("%s", "Connection has been established");
         lobby_connection_established();
     }
 }
@@ -141,10 +141,10 @@ static gboolean get_text() {
 
     gchar input[MAX_STRING_LENGTH];
     if (get_string_from_pipe(currentPipe, input, MAX_STRING_LENGTH)) {
-        printf("%s: %s\n", "Incoming operation", input);
+        g_debug("%s: %s", "Incoming operation", input);
         if (strstr(input, REQUEST_CONNECTION) != NULL) {
             state.requestReceived = true;
-            printf("%s\n", "Received connection request");
+            g_debug("%s", "Received connection request");
             if (state.requestSent) {
                 connection_accept();
             }
@@ -153,23 +153,23 @@ static gboolean get_text() {
         if (strstr(input, ACCEPT_CONNECTION) != NULL) {
             if (!state.connectionEstablished) {
                 state.connectionAccepted = true;
-                printf("%s\n", "Received accept connection");
+                g_debug("%s", "Received accept connection");
                 act_on_state_change();
             } else {
-                printf("%s\n", "Received accept connection (Connection already established)");
+                g_debug("%s", "Received accept connection (Connection already established)");
             }
         }
         if (strstr(input, DROP_CONNECTION) != NULL) {
             state.dropReceived = true;
-            printf("%s\n", "Received drop request");
+            g_debug("%s", "Received drop request");
             act_on_state_change();
         }
         if (strstr(input, SIZE_4) != NULL) {
-            printf("Received %s\n", SIZE_4);
+            g_debug("Received %s", SIZE_4);
             lobby_size_received(4);
         }
         if (strstr(input, SIZE_5) != NULL) {
-            printf("Received %s\n", SIZE_5);
+            g_debug("Received %s", SIZE_5);
             lobby_size_received(5);
         }
         if (strstr(input, MOVE_PUSH_PREFIX) != NULL) {
@@ -178,7 +178,7 @@ static gboolean get_text() {
             int column = read_move_column(stringPtr);
             game_move_push(column, false);
 
-            printf("Received %s%d\n", MOVE_PUSH_PREFIX, column);
+            g_debug("Received %s%d", MOVE_PUSH_PREFIX, column);
         }
         if (strstr(input, MOVE_REPLACE_PREFIX) != NULL) {
             char *stringPtr = strstr(input, MOVE_REPLACE_PREFIX);
@@ -186,10 +186,10 @@ static gboolean get_text() {
             int column = read_move_column(stringPtr);
             game_move_replace(column);
 
-            printf("Received %s%d\n", MOVE_REPLACE_PREFIX, column);
+            g_debug("Received %s%d", MOVE_REPLACE_PREFIX, column);
         }
         if (strstr(input, PLAY_AGAIN)) {
-            printf("Received %s\n", PLAY_AGAIN);
+            g_debug("Received %s", PLAY_AGAIN);
             game_opponent_concede();
         }
     }

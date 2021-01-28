@@ -110,7 +110,7 @@ void game_move_push(int column, bool wasColumnReplaced) {
 
 static bool check_for_game_end() {
     if (!game_are_any_moves_left(boardElements)) {
-        printf("A tie!");
+        g_debug("A tie!");
         whoseTurn = PLAYER_NONE;
         modal_end_game(&player, PLAYER_NONE);
         return true;
@@ -118,7 +118,7 @@ static bool check_for_game_end() {
 
     PlayerType winner = game_check_winner(boardElements, elementsToWin);
     if (winner != PLAYER_NONE) {
-        printf("Player %s wins!\n", winner == PLAYER_ONE ? "1" : "2");
+        g_debug("Player %s wins!", winner == PLAYER_ONE ? "1" : "2");
 
         game_set_winning_elements_background(board, game_winner_sequence, elementsToWin, false);
 
@@ -209,7 +209,7 @@ static gboolean on_frame_click(GtkWidget *widget) {
     int x, y;
     game_get_event_box_coordinates(board, widget, &x, &y);
 
-    printf("Clicked x:%d  y:%d\n", x, y);
+    g_debug("Clicked x:%d  y:%d", x, y);
 
     if (whoseTurn == player && game_is_move_possible(boardElements, x)) {
         Element element = boardElements[x][y];

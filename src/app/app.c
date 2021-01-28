@@ -48,12 +48,8 @@ void app_init(int argc, char *argv[]) {
 
     init_pages();
 
-    if (argc > 1) {
-        if (*argv[1] == '1') {
-            app_play_as_1_with_size(5);
-        } else if (*argv[1] == '2') {
-            app_play_as_2();
-        }
+    if (argc > 1 && strcmp(argv[1], "debug") == 0) {
+        setenv("G_MESSAGES_DEBUG", "all", 1);
     }
 
     gtk_widget_show_all(GTK_WIDGET(window));
@@ -94,11 +90,6 @@ void app_remove_css_class_from_widget(GtkWidget *widget, const gchar *cssClass) 
 
 void app_menu() {
     app_show_page(pages.mainMenuPage);
-}
-
-static void app_play_as_1_with_size(int size) {
-    lobby_show_with_size(PLAYER_ONE, size);
-    app_show_page(pages.lobbyPage);
 }
 
 void app_play_as_1() {

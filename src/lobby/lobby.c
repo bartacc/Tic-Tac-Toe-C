@@ -80,9 +80,3 @@ void lobby_size_received(int size) {
     chosenSize = size;
     app_start_game(chosenSize, playerType);
 }
-
-//Used for starting the game from command-line
-void lobby_show_with_size(PlayerType pType, int size) {
-    lobby_show(pType);
-    choose_size(size);
-}

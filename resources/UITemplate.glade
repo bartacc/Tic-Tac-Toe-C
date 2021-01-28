@@ -130,9 +130,6 @@ Lost: 1</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
           <packing>
             <property name="name">gameplay-page</property>
@@ -291,12 +288,18 @@ Lost: 1</property>
               <object class="GtkLabel" id="how_to_play_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">This is how to play the game
+                <property name="label" translatable="yes">There are two types of moves you can make:
+
+1. Click an empty square to place your piece on top of the selected column
+
+2. Click a filled square to move the piece from the column's bottom to it's top,
+then place your piece on top of the selected column
 
 
-alal
+First player to get 4 or 5 (chosen at the start of the game)
+of his own pieces in a row, column or a diagonal wins.
 
-That's right</property>
+Enjoy!</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -306,7 +309,7 @@ That's right</property>
             </child>
             <child>
               <object class="GtkButton" id="how_to_play_back_button">
-                <property name="label" translatable="yes">Back to menu/game</property>
+                <property name="label" translatable="yes">Back</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -347,8 +350,8 @@ That's right</property>
                   <object class="GtkLabel" id="lobby_choose_size_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Choose numbers of elements required to win (horizontally, vertically or diagonally)</property>
-                    <property name="wrap">True</property>
+                    <property name="label" translatable="yes">Choose numbers of elements required to win
+(horizontally, vertically or diagonally)</property>
                     <style>
                       <class name="header"/>
                     </style>

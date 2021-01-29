@@ -8,6 +8,7 @@
 
 <a name="intro"></a>
 ### Introduction
+![Gameplay gif](Tic-Tac-Toe-gameplay.gif)
 This is a modified, two-player Tic Tac Toe game written in C and GTK+3. It runs in two instances communicating with each other through local files.
 
 <a name="rules"></a>

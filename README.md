@@ -4,12 +4,13 @@
 1. [Introduction](#intro)
 2. [Game rules](#rules)
 3. [Code overview](#code)
-4. [Installing the game from source](#install)
+4. [Compiling the game from source](#compile)
 
 <a name="intro"></a>
 ### Introduction
 ![Gameplay gif](Tic-Tac-Toe-gameplay.gif)
-This is a modified, two-player Tic Tac Toe game written in C and GTK+3. It runs in two instances communicating with each other through local files.
+This is a modified, two-player Tic Tac Toe game written in C and GTK+3. It runs in two instances communicating with each other through local files. \
+You can run it by downloading the compiled build from `builds/` folder or by [compiling from source](#compile). Provided binaries might still require having GTK installed though.
 
 <a name="rules"></a>
 ### Game rules
@@ -38,8 +39,8 @@ Also, inside `resources/` there are:
 2. `style.css` containing basic styles to make the game look more or less the same on different platforms.
 3. `gresource.xml` which tells `glib` what resources it should include in the project. The resources can be compiled to C by running the `compile_resources.sh` script. The resulting `resources.c` is then compiled with the rest of the project.
 
-<a name="install"></a>
-### Installing the game from source
+<a name="compile"></a>
+### Compiling the game from source
 #### On Linux:
 1. Make sure GCC, GTK and CMake are installed. On Ubuntu: \
 `sudo apt-get install gcc` \

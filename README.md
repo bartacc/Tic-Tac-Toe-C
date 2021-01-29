@@ -55,7 +55,7 @@ Also, inside `resources/` there are:
 `cd cmake-build-debug` \
 `./Tic_Tac_Toe_C`
 
-### On Windows:
+#### On Windows:
 1. Install GCC, GTK and CMake using MSys2 (https://www.gtk.org/docs/installations/windows/) \
    Especially run: \
    `pacman -S mingw-w64-x86_64-gtk3` \

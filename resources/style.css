@@ -15,11 +15,6 @@ grid, stack {
     color: @white;
 }
 
-.dialog-widget decoration {
-    background-color: purple;
-    color: purple;
-}
-
 .header {
     font-size: 36px;
     font-weight: bold;

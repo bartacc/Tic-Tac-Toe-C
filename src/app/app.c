@@ -50,7 +50,7 @@ void app_init(int argc, char *argv[]) {
     init_pages();
 
     if (argc > 1 && strcmp(argv[1], "debug") == 0) {
-        _putenv_s("G_MESSAGES_DEBUG", "all");
+        putenv("G_MESSAGES_DEBUG=all");
     }
 
     gtk_widget_show_all(GTK_WIDGET(window));

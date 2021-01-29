@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "../../constants/constants.h"
 
-int game_winner_sequence[MAX_WINNING_SEQUENCE * 2]; //Array of MAX_WINNING_SEQUENCE (x,y) pairs
+extern int game_winner_sequence[MAX_WINNING_SEQUENCE * 2]; //Array of MAX_WINNING_SEQUENCE (x,y) pairs
 
 PlayerType game_check_winner(Element boardElements[BOARD_SIZE][BOARD_SIZE], int elementsToWin);
 void game_clear_winner_sequence_array();

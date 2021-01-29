@@ -1,5 +1,6 @@
 
 #include <gtk/gtk.h>
+#include <stdlib.h>
 #include "app.h"
 #include "../menu/menu.h"
 #include "../connection/connection.h"
@@ -49,7 +50,7 @@ void app_init(int argc, char *argv[]) {
     init_pages();
 
     if (argc > 1 && strcmp(argv[1], "debug") == 0) {
-        setenv("G_MESSAGES_DEBUG", "all", 1);
+        _putenv_s("G_MESSAGES_DEBUG", "all");
     }
 
     gtk_widget_show_all(GTK_WIDGET(window));

@@ -4,6 +4,8 @@
 #include "game_utils.h"
 #include "game_gtk_utils.h"
 
+int game_winner_sequence[MAX_WINNING_SEQUENCE * 2]; //Array of MAX_WINNING_SEQUENCE (x,y) pairs
+
 static PlayerType check_winner_sequence_linear(Element boardElements[BOARD_SIZE][BOARD_SIZE],
                                                int elementsToWin, bool checkColumns);
 static PlayerType check_winner_sequence_diagonal_up(Element boardElements[BOARD_SIZE][BOARD_SIZE],
@@ -54,7 +56,7 @@ PlayerType game_check_winner(Element boardElements[BOARD_SIZE][BOARD_SIZE], int 
 
 void game_clear_winner_sequence_array() {
     for (int i = 0; i < MAX_WINNING_SEQUENCE * 2; i++) {
-        game_winner_sequence[i] = NAN;
+        game_winner_sequence[i] = -1;
     }
 }
 

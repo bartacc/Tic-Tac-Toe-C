@@ -1,7 +1,7 @@
 #include "menu.h"
 #include "../app/app.h"
 
-static const gchar *MENU_PAGE_STRING = MENU_PAGE;
+static gchar *MENU_PAGE_STRING = MENU_PAGE;
 
 void menu_init(GtkBuilder *builder) {
     GtkButton *playAs1Button, *playAs2Button, *howToPlayButton, *quitButton;

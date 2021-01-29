@@ -32,7 +32,7 @@ void game_set_winning_elements_background(GtkGrid *board, const int winnerSequen
         int x = winnerSequence[i];
         int y = winnerSequence[i + 1];
 
-        if (x == NAN || y == NAN) continue;
+        if (x == -1 || y == -1) continue;
 
         GtkBin *frame = get_element_frame_at_index(board, x, y);
         if (clear) {

@@ -7,7 +7,7 @@
 #include "../connection/connection.h"
 #include "../modals/modals.h"
 
-static const gchar *GAMEPLAY_PAGE_STRING = GAMEPLAY_PAGE;
+static gchar *GAMEPLAY_PAGE_STRING = GAMEPLAY_PAGE;
 
 static GtkGrid *board;
 static GtkLabel *stateLabel, *wonLostCountLabel;
